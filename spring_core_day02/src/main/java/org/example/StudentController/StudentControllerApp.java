@@ -1,6 +1,8 @@
 package org.example.StudentController;
 
 import org.example.Data.Student;
+import org.example.dto.StudentRequestDTO;
+import org.example.dto.StudentResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,29 +20,42 @@ public class StudentControllerApp {
     }
 
     @GetMapping
-    public List<Student> getAll() {
-        return service.getAll();
+    public List<StudentResponseDTO> findAll() {
+        return service.getAll()
+                .stream()
+                .map(student -> new StudentResponseDTO(
+                        student.getId(),
+                        student.getFirstName(),
+                        student.getLastName(),
+                        student.getEmail())).toList();
     }
 
     @GetMapping("/{id}")
-    public Student getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
+    public StudentResponseDTO findById(@PathVariable Long id) {
 
-
-    @GetMapping("get/{name}")
-    public Student getByName(@PathVariable String name) {
-        return service.findByFirstName(name);
+        Student student = service.getById(id);
+        return new StudentResponseDTO(
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail()
+        );
     }
 
     @PostMapping
-    public Student create(@RequestBody Student student) {
-        return service.create(student);
-    }
+    public StudentResponseDTO create(@RequestBody StudentRequestDTO studentdto) {
+        Student student = new Student(
+                studentdto.getFirstName(),
+                studentdto.getLastName(),
+                studentdto.getEmail()
+        );
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+        Student savedStudent = service.create(student);
+
+        return new StudentResponseDTO(
+                savedStudent.getId(),
+                savedStudent.getFirstName(),
+                savedStudent.getLastName(),
+                savedStudent.getEmail()
+        );
     }
 }
