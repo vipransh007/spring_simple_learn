@@ -31,6 +31,14 @@ public class StudentService {
         return repo.save(student);
     }
 
+    public  Student update(Long id ,Student student) {
+        Student savedStudent = getById(id);
+        savedStudent.setFirstName(student.getFirstName());
+        savedStudent.setLastName(student.getLastName());
+        savedStudent.setEmail(student.getEmail());
+
+        return repo.save(savedStudent);
+    }
 
     public void delete(Long id) {
         repo.deleteById(id);

@@ -58,4 +58,28 @@ public class StudentControllerApp {
                 savedStudent.getEmail()
         );
     }
+
+    @PutMapping("/{id}")
+    public StudentResponseDTO update(@PathVariable Long id, @RequestBody StudentRequestDTO studentdto) {
+        Student student = new Student(
+                studentdto.getFirstName(),
+                studentdto.getLastName(),
+                studentdto.getEmail()
+        );
+
+        Student savedStudent = service.update(id , student);
+
+        return new StudentResponseDTO(
+                savedStudent.getId(),
+                savedStudent.getFirstName(),
+                savedStudent.getLastName(),
+                savedStudent.getEmail()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<?> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }
