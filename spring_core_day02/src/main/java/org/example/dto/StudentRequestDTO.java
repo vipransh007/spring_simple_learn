@@ -1,5 +1,9 @@
 package org.example.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class StudentRequestDTO {
 
     public StudentRequestDTO(String firstName, String lastName, String email) {
@@ -10,9 +14,18 @@ public class StudentRequestDTO {
 
     public StudentRequestDTO() {}
 
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, max = 30,
+            message = "First name must be between 2 and 30 characters")
     private String firstName;
+
+    @NotBlank(message = "Last name is required")
     private String lastName;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please provide a valid email")
     private String email;
+
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }

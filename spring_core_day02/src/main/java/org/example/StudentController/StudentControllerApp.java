@@ -1,5 +1,6 @@
 package org.example.StudentController;
 
+import jakarta.validation.Valid;
 import org.example.Data.Student;
 import org.example.dto.StudentRequestDTO;
 import org.example.dto.StudentResponseDTO;
@@ -42,7 +43,7 @@ public class StudentControllerApp {
     }
 
     @PostMapping
-    public StudentResponseDTO create(@RequestBody StudentRequestDTO studentdto) {
+    public StudentResponseDTO create(@Valid @RequestBody StudentRequestDTO studentdto) {
         Student student = new Student(
                 studentdto.getFirstName(),
                 studentdto.getLastName(),
