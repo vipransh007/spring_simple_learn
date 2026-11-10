@@ -1,6 +1,7 @@
 package org.example.StudentController;
 
 import org.example.Data.Student;
+import org.example.Exception.StudentNotFoundException;
 import org.example.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -24,7 +25,7 @@ public class StudentService {
 
     public Student getById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found: " + id));
+                .orElseThrow(() -> new StudentNotFoundException("Student not found: " + id));
     }
 
     public Student create(Student student) {
