@@ -3,8 +3,8 @@ package org.example.StudentController;
 import org.example.Data.Student;
 import org.example.Exception.StudentNotFoundException;
 import org.example.Repository.StudentRepository;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class StudentService {
@@ -19,8 +19,8 @@ public class StudentService {
         return repo.findFirstByFirstName(firstName);
     }
 
-    public List<Student> getAll() {
-        return repo.findAll();
+    public Page<Student> getAll(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 
     public Student getById(Long id) {

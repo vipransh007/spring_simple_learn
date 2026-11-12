@@ -4,10 +4,12 @@ import jakarta.validation.Valid;
 import org.example.Data.Student;
 import org.example.dto.StudentRequestDTO;
 import org.example.dto.StudentResponseDTO;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 @RestController
 
@@ -21,14 +23,17 @@ public class StudentControllerApp {
     }
 
     @GetMapping
-    public List<StudentResponseDTO> findAll() {
-        return service.getAll()
-                .stream()
+    public Page<StudentResponseDTO> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size) {
+
+        return service.getAll(PageRequest.of(page,size))
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
                         student.getFirstName(),
                         student.getLastName(),
-                        student.getEmail())).toList();
+                        student.getEmail()
+                ));
     }
 
     @GetMapping("/{id}")
